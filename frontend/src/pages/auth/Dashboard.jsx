@@ -1,7 +1,9 @@
 import React from "react";
 import "./dashboard.css";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const navigate = useNavigate();
   return (
     <div>
       {/* Navbar */}
@@ -12,8 +14,18 @@ function Dashboard() {
           <li>About</li>
           <li>Services</li>
           <li>Contact</li>
-          <li>Login / Register</li>
+          <li><button onClick={() => navigate("/login")}>Login</button></li>
+          <li><button onClick={() => navigate("/register")}>Register</button></li>
+          <li>
+            <button onClick={()=>{
+             navigate("/profile");
+            }}>
+              Profile
+            </button>
+          </li>
+
         </ul>
+
       </nav>
 
       {/* Hero Section */}
@@ -22,6 +34,7 @@ function Dashboard() {
         <p>Manage everything easily from one place</p>
         <button>Get Started</button>
       </section>
+
 
       {/* About Section */}
       <section className="about">
