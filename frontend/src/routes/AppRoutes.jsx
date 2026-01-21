@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import Dashboard from "../pages/auth/Dashboard";
 
 const PrivateRoute = ({ children }) => {
   const { isAuth, loading } = useAuth();
@@ -16,15 +17,7 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <h1 className="text-xl">Dashboard</h1>
-            </PrivateRoute>
-          }
-        />
+         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
