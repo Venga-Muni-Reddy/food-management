@@ -10,11 +10,10 @@ function Dashboard() {
       <nav className="navbar">
         <div className="logo">MyApp</div>
         <ul className="nav-links">
-          <li></li>
-          <li><button onClick={() => navigate("/home")}>Home</button></li>
-          <li><button onClick={() => navigate("/about")}>About</button></li>
-          <li><button onClick={() => navigate("/services")}>Services</button></li>
-          <li><button onClick={() => navigate("/contact")}>/Contact</button></li>
+          <li>Home</li>
+          <li>About</li>
+          <li>Services</li>
+          <li>Contact</li>
           <li><button onClick={() => navigate("/login")}>Login</button></li>
           <li><button onClick={() => navigate("/register")}>Register</button></li>
           <li>

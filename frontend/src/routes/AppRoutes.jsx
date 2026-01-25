@@ -1,14 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Home } from "../components/Home";
-import { About } from "../components/About";
-import  { Services } from "../components/Services";
-import  { Contact } from "../components/Contact";
+
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/auth/Dashboard";
 import { Profile } from "../components/Profile";
 
-// export default function AppRoutes() 
+
+// export default function AppRoutes() {
 //   return (
 //     <BrowserRouter>
 //       <Routes>
@@ -25,10 +23,6 @@ function AppRoutes(){
     return(
         <BrowserRouter>
           <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/about" element={<About />} />
-             <Route path="/services" element={<Services />} />  
-             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
              <Route path="/dashboard" element={<Dashboard />} />  
