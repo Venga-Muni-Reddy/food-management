@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
 import "./login.css";
+import api from "../../api/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPass, setShowPass] = useState(false);
@@ -52,7 +53,17 @@ export default function Login() {
 
     try {
       setLoading(true);
-      await login({ email, password });
+
+      const res = await api.post("/auth/login", { email, password });
+
+      const token = res.data?.data?.token;
+      const user = res.data?.data?.user;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      alert("✅ Login Successful!");
+      navigate("/"); // change route based on your app
     } catch (err) {
       setError(
         err?.response?.data?.message ||
@@ -66,7 +77,6 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      {/* Background decorative blob */}
       <div className="login-bg" aria-hidden="true" />
 
       <div className="login-wrapper">
@@ -74,17 +84,16 @@ export default function Login() {
           <div className="login-header">
             <div className="login-logo">
               <span className="logo-dot" />
-              <span className="logo-text">MyApp</span>
+              <span className="logo-text">FoodShare</span>
             </div>
 
             <h1 className="login-title">Welcome Back 👋</h1>
             <p className="login-subtitle">
-              Login to continue and manage your account.
+              Login to see nearby food notifications.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="login-form" noValidate>
-            {/* Email */}
             <div className="field">
               <label className="field-label" htmlFor="email">
                 Email
@@ -103,7 +112,6 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Password */}
             <div className="field">
               <label className="field-label" htmlFor="password">
                 Password
@@ -130,29 +138,10 @@ export default function Login() {
                   {showPass ? "Hide" : "Show"}
                 </button>
               </div>
-
-              <div className="helper-row">
-                <div className="remember">
-                  <input id="remember" type="checkbox" />
-                  <label htmlFor="remember">Remember me</label>
-                </div>
-
-                <button
-                  type="button"
-                  className="forgot-btn"
-                  onClick={() =>
-                    alert("Integrate Forgot Password API / page here ✅")
-                  }
-                >
-                  Forgot password?
-                </button>
-              </div>
             </div>
 
-            {/* Error */}
             {error && <div className="error-box">{error}</div>}
 
-            {/* Submit */}
             <button
               type="submit"
               className={`login-btn ${loading ? "loading" : ""}`}
@@ -161,26 +150,9 @@ export default function Login() {
               {loading ? "Logging in..." : "Login"}
             </button>
 
-            <div className="divider">
-              <span>OR</span>
-            </div>
-
-            {/* Optional social login button UI */}
-            <button
-              type="button"
-              className="google-btn"
-              onClick={() => alert("Integrate Google OAuth here ✅")}
-            >
-              <span className="google-icon">G</span>
-              Continue with Google
-            </button>
-
             <p className="signup-text">
               Don’t have an account?{" "}
-              <span
-                className="signup-link"
-                onClick={() => alert("Navigate to Signup page ✅")}
-              >
+              <span className="signup-link" onClick={() => navigate("/register")}>
                 Create one
               </span>
             </p>
@@ -188,7 +160,7 @@ export default function Login() {
         </div>
 
         <footer className="login-footer">
-          © {new Date().getFullYear()} MyApp. All rights reserved.
+          © {new Date().getFullYear()} FoodShare. All rights reserved.
         </footer>
       </div>
     </div>

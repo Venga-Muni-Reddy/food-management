@@ -1,26 +1,63 @@
 import React, { useState } from "react";
 import "./Register.css";
+import api from "../../api/axios";
+import { getCurrentLocation } from "../../utils/location";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     phone: "",
-    gender: "",
+    address: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setError("");
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Register Data:", formData);
-    alert("Registered Successfully!");
+    setError("");
+
+    try {
+      setLoading(true);
+
+      // ✅ Get user's current location
+      const { latitude, longitude } = await getCurrentLocation();
+
+      const payload = {
+        ...formData,
+        latitude,
+        longitude,
+      };
+
+      const res = await api.post("/auth/signup", payload);
+
+      const token = res.data?.data?.token;
+      const user = res.data?.data?.user;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      alert("✅ Registered Successfully!");
+      navigate("/login");
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Signup failed. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,7 +86,7 @@ const Register = () => {
         <input
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder="Password (min 6 chars)"
           value={formData.password}
           onChange={handleChange}
           required
@@ -61,25 +98,26 @@ const Register = () => {
           placeholder="Phone Number"
           value={formData.phone}
           onChange={handleChange}
-          required
         />
 
-        <select
-          name="gender"
-          value={formData.gender}
+        <input
+          type="text"
+          name="address"
+          placeholder="Address (ex: Ameerpet, Hyderabad)"
+          value={formData.address}
           onChange={handleChange}
-          required
-        >
-          <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
+        />
 
-        <button type="submit">Register</button>
+        {/* Error */}
+        {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Registering..." : "Register"}
+        </button>
 
         <p className="login-text">
-          Already have an account? <span>Login</span>
+          Already have an account?{" "}
+          <span onClick={() => navigate("/login")}>Login</span>
         </p>
       </form>
     </div>
