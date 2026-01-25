@@ -4,7 +4,7 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/auth/Dashboard";
 import { Profile } from "../components/Profile";
-
+import MyFoods from "../pages/MyFoods/MyFoods";
 
 // export default function AppRoutes() {
 //   return (
@@ -25,8 +25,10 @@ function AppRoutes(){
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-             <Route path="/dashboard" element={<Dashboard />} />  
+             <Route path="/" element={<Dashboard />} />  
              <Route path="/profile" element={<Profile />} />
+             <Route path="/myfoods" element={<MyFoods />} />
+
              
           </Routes>
         </BrowserRouter>
