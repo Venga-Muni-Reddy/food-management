@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../api/axios";
-import "./myfoods.css";
+import "./MyFoods.css";
 import { useNavigate } from "react-router-dom";
 
 export default function MyFoods() {
