@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 
 const authRoutes = require("./routes/authRoutes");
 const foodRoutes = require("./routes/foodRoutes");
@@ -8,7 +9,7 @@ const notificationRoutes = require("./routes/notificationRoutes");
 const app = express();
 
 app.use(cors({
-    origin: "http://localhost:5173", // ✅ frontend URL
+    origin: process.env.FRONTEND_URL, // ✅ frontend URL
     credentials: true,               // ✅ allow cookies
   }));
 app.use(express.json());
